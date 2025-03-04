@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3D Buttons with 3D Background</title>
+<title>Register and Login</title>
 <style>
     body {
         margin: 0;
@@ -43,13 +43,57 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 2;
+    }
+    .modal input {
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        width: 100%;
+    }
+    .modal button {
+        padding: 10px;
+        width: 100%;
+    }
 </style>
 </head>
 <body>
     <div class="background"></div>
     <div class="button-container">
-        <button class="button">Register</button>
-        <button class="button">Login</button>
+        <button class="button" onclick="openModal('register')">Register</button>
+        <button class="button" onclick="openModal('login')">Login</button>
     </div>
+
+    <div id="registerModal" class="modal">
+        <h2>Register</h2>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button onclick="closeModal('register')">Submit</button>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <h2>Login</h2>
+        <input type="text" placeholder="Username">
+        <input type="password" placeholder="Password">
+        <button onclick="closeModal('login')">Submit</button>
+    </div>
+
+    <script>
+        function openModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'block';
+        }
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
