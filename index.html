@@ -3,89 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Permainan 2D Berjelajah</title>
+    <title>WhatsApp Message Sender</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-
-        canvas {
-            border: 1px solid #000;
-            background-color: #fff;
+        .container {
+            text-align: center;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #25D366;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #128C7E;
         }
     </style>
 </head>
 <body>
-    <h1>Permainan 2D Berjelajah</h1>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="container">
+        <h1>Send WhatsApp Message</h1>
+        <input type="text" id="phoneNumber" placeholder="Enter phone number">
+        <textarea id="message" placeholder="Enter your message"></textarea>
+        <button id="sendBtn">Send Message</button>
+    </div>
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const context = canvas.getContext('2d');
+        document.getElementById('sendBtn').addEventListener('click', function() {
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const message = document.getElementById('message').value.trim();
 
-        let player = {
-            x: 50,
-            y: 50,
-            width: 50,
-            height: 50,
-            color: 'blue',
-            speed: 5
-        };
-
-        let keys = {
-            right: false,
-            left: false,
-            up: false,
-            down: false
-        };
-
-        function drawPlayer() {
-            context.fillStyle = player.color;
-            context.fillRect(player.x, player.y, player.width, player.height);
-        }
-
-        function clearCanvas() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-        function update() {
-            clearCanvas();
-            drawPlayer();
-            movePlayer();
-            requestAnimationFrame(update);
-        }
-
-        function movePlayer() {
-            if (keys.right && player.x + player.width < canvas.width) {
-                player.x += player.speed;
+            if (phoneNumber && message) {
+                const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappURL, '_blank');
+            } else {
+                alert('Please enter both phone number and message.');
             }
-            if (keys.left && player.x > 0) {
-                player.x -= player.speed;
-            }
-            if (keys.up && player.y > 0) {
-                player.y -= player.speed;
-            }
-            if (keys.down && player.y + player.height < canvas.height) {
-                player.y += player.speed;
-            }
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') keys.right = true;
-            if (e.key === 'ArrowLeft') keys.left = true;
-            if (e.key === 'ArrowUp') keys.up = true;
-            if (e.key === 'ArrowDown') keys.down = true;
         });
-
-        document.addEventListener('keyup', (e) => {
-            if (e.key === 'ArrowRight') keys.right = false;
-            if (e.key === 'ArrowLeft') keys.left = false;
-            if (e.key === 'ArrowUp') keys.up = false;
-            if (e.key === 'ArrowDown') keys.down = false;
-        });
-
-        update();
     </script>
 </body>
 </html>
