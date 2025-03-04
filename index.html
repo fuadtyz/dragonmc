@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3D Register and Login Forms</title>
+<title>Enhanced Register and Login</title>
 <style>
     body {
         margin: 0;
@@ -15,6 +15,7 @@
         background: radial-gradient(circle, rgba(63,81,181,1) 0%, rgba(0,150,136,1) 100%);
         perspective: 1000px;
         font-family: 'Arial', sans-serif;
+        overflow: hidden;
     }
     .background {
         position: absolute;
@@ -71,13 +72,53 @@
         color: green;
         font-weight: bold;
     }
+    .info {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 3;
+        color: #ffffff;
+        font-size: 18px;
+    }
+    .menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 3;
+        color: #ffffff;
+        cursor: pointer;
+    }
+    .menu-items {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: rgba(0,0,0,0.8);
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .menu-items a {
+        color: #ffffff;
+        text-decoration: none;
+        display: block;
+        margin: 5px 0;
+    }
 </style>
 </head>
 <body>
-    <div class="background"></div>
+    <div class="background" id="background"></div>
     <div class="button-container">
         <button class="button" onclick="openModal('register')">Register</button>
         <button class="button" onclick="openModal('login')">Login</button>
+    </div>
+    <div class="info" id="info">
+        <div>Money: $1000</div>
+        <div id="date"></div>
+    </div>
+    <div class="menu" onclick="toggleMenu()">⋮</div>
+    <div class="menu-items" id="menuItems">
+        <a href="#" onclick="playSnake()">Play Snake</a>
+        <a href="#" onclick="startMathPuzzle()">Math Puzzle</a>
     </div>
 
     <div id="registerModal" class="modal">
@@ -98,19 +139,188 @@
     </div>
 
     <script>
+        let users = [];
+
         function openModal(type) {
             document.getElementById(type + 'Modal').style.display = 'block';
         }
+
         function closeModal(type) {
             document.getElementById(type + 'Modal').style.display = 'none';
         }
+
         function submitForm(type) {
-            closeModal(type);
-            document.getElementById(type + 'Success').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById(type + 'Success').style.display = 'none';
-            }, 2000);
+            if (type === 'register') {
+                const email = document.getElementById('registerEmail').value;
+                const username = document.getElementById('registerUsername').value;
+                const password = document.getElementById('registerPassword').value;
+
+                users.push({ email, username, password });
+                closeModal(type);
+                document.getElementById('registerSuccess').style.display = 'block';
+                document.getElementById('background').style.backgroundImage = 'url(new-background-image.jpg)'; // Use the new background image URL here
+                setTimeout(() => {
+                    document.getElementById('registerSuccess').style.display = 'none';
+                }, 2000);
+            } else if (type === 'login') {
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+
+                const user = users.find(user => user.username === username && user.password === password);
+
+                if (user) {
+                    closeModal(type);
+                    document.getElementById('loginSuccess').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('loginSuccess').style.display = 'none';
+                    }, 2000);
+                } else {
+                    alert('Login Failed. Please check your username and password.');
+                }
+            }
         }
+
+        function updateDate() {
+            const now = new Date();
+            const dateString = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            document.getElementById('date').innerText = dateString;
+        }
+
+        function toggleMenu() {
+            const menuItems = document.getElementById('menuItems');
+            menuItems.style.display = menuItems.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function playSnake() {
+            alert('Starting Snake game...');
+            const canvas = document.getElementById("gameCanvas");
+const context = canvas.getContext("2d");
+canvas.width = 400;
+canvas.height = 400;
+
+const gridSize = 20;
+let snake = [{ x: gridSize * 5, y: gridSize * 5 }];
+let direction = { x: 0, y: 0 };
+let apple = spawnApple();
+let score = 0;
+
+document.addEventListener("keydown", changeDirection);
+
+function gameLoop() {
+    if (hasGameEnded()) return;
+    setTimeout(() => {
+        clearCanvas();
+        drawApple();
+        moveSnake();
+        drawSnake();
+        gameLoop();
+    }, 100);
+}
+
+function clearCanvas() {
+    context.fillStyle = "#000";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawApple() {
+    context.fillStyle = "#ff0000";
+    context.fillRect(apple.x, apple.y, gridSize, gridSize);
+}
+
+function moveSnake() {
+    const head = { x: snake[0].x + direction.x * gridSize, y: snake[0].y + direction.y * gridSize };
+    snake.unshift(head);
+
+    if (head.x === apple.x && head.y === apple.y) {
+        apple = spawnApple();
+        score += 10;
+    } else {
+        snake.pop();
+    }
+}
+
+function drawSnake() {
+    context.fillStyle = "#00ff00";
+    snake.forEach(segment => {
+        context.fillRect(segment.x, segment.y, gridSize, gridSize);
+    });
+}
+
+function changeDirection(event) {
+    const keyPressed = event.keyCode;
+    const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+
+    if (keyPressed === LEFT && direction.x === 0) {
+        direction = { x: -1, y: 0 };
+    }
+    if (keyPressed === UP && direction.y === 0) {
+        direction = { x: 0, y: -1 };
+    }
+    if (keyPressed === RIGHT && direction.x === 0) {
+        direction = { x: 1, y: 0 };
+    }
+    if (keyPressed === DOWN && direction.y === 0) {
+        direction = { x: 0, y: 1 };
+    }
+}
+
+function hasGameEnded() {
+    for (let i = 1; i < snake.length; i++) {
+        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
+    }
+    const hitLeftWall = snake[0].x < 0;
+    const hitRightWall = snake[0].x >= canvas.width;
+    const hitTopWall = snake[0].y < 0;
+    const hitBottomWall = snake[0].y >= canvas.height;
+
+    return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
+}
+
+function spawnApple() {
+    const x = Math.floor(Math.random() * canvas.width / gridSize) * gridSize;
+    const y = Math.floor(Math.random() * canvas.height / gridSize) * gridSize;
+    return { x, y };
+}
+
+gameLoop();
+        }
+
+        function startMathPuzzle() {
+            alert('Starting Math Puzzle game...');
+            const questionDiv = document.getElementById("question");
+const answerInput = document.getElementById("answerInput");
+const resultDiv = document.getElementById("result");
+
+let num1, num2;
+
+function generateQuestion() {
+    num1 = Math.floor(Math.random() * 10) + 1;
+    num2 = Math.floor(Math.random() * 10) + 1;
+    questionDiv.textContent = `What is ${num1} + ${num2}?`;
+    answerInput.value = "";
+    resultDiv.textContent = "";
+}
+
+function checkAnswer() {
+    const userAnswer = parseInt(answerInput.value);
+    const correctAnswer = num1 + num2;
+
+    if (userAnswer === correctAnswer) {
+        resultDiv.textContent = "Correct!";
+        resultDiv.style.color = "green";
+    } else {
+        resultDiv.textContent = `Wrong. The correct answer was ${correctAnswer}.`;
+        resultDiv.style.color = "red";
+    }
+
+    setTimeout(generateQuestion, 2000);
+}
+
+generateQuestion();
+        }
+
+        setInterval(updateDate, 1000);
+        updateDate();
     </script>
 </body>
 </html>
