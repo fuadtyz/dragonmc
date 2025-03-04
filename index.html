@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Message Sender</title>
+    <title>Custom Chat App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,9 +14,11 @@
             height: 100vh;
             margin: 0;
         }
+
         .container {
             text-align: center;
         }
+
         input, textarea {
             width: 100%;
             padding: 10px;
@@ -24,6 +26,7 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+
         button {
             background-color: #25D366;
             border: none;
@@ -32,6 +35,7 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
         button:hover {
             background-color: #128C7E;
         }
@@ -39,7 +43,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Send WhatsApp Message</h1>
+        <h1>Send Custom Message</h1>
         <input type="text" id="phoneNumber" placeholder="Enter phone number">
         <textarea id="message" placeholder="Enter your message"></textarea>
         <button id="sendBtn">Send Message</button>
@@ -50,8 +54,9 @@
             const message = document.getElementById('message').value.trim();
 
             if (phoneNumber && message) {
-                const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                window.open(whatsappURL, '_blank');
+                const messageBox = document.createElement('div');
+                messageBox.innerHTML = `<strong>To:</strong> ${phoneNumber}<br><strong>Message:</strong> ${message}`;
+                document.body.appendChild(messageBox);
             } else {
                 alert('Please enter both phone number and message.');
             }
