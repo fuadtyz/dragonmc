@@ -66,10 +66,17 @@
             <label for="pluginAuthor">Plugin Author:</label>
             <input type="text" id="pluginAuthor" name="pluginAuthor" required>
 
+            <label for="downloadType">Download Type:</label>
+            <select id="downloadType" name="downloadType" required>
+                <option value="zip">ZIP</option>
+                <option value="phar">PHAR</option>
+            </select>
+
             <button type="submit">Generate Plugin</button>
         </form>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script>
         document.getElementById('pluginForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -77,10 +84,12 @@
             const pluginName = document.getElementById('pluginName').value;
             const pluginDescription = document.getElementById('pluginDescription').value;
             const pluginAuthor = document.getElementById('pluginAuthor').value;
+            const downloadType = document.getElementById('downloadType').value;
+            const pluginNamespace = pluginName.replace(/\s+/g, '');  // Remove spaces for namespace
 
             const pluginYml = `
 name: ${pluginName}
-main: ${pluginName}\\Main
+main: ${pluginNamespace}\\Main
 version: 1.0.0
 api: [5.0.0]
 author: ${pluginAuthor}
@@ -90,7 +99,7 @@ description: ${pluginDescription}
             const mainPhp = `
 <?php
 
-namespace ${pluginName};
+namespace ${pluginNamespace};
 
 use pocketmine\\plugin\\PluginBase;
 use pocketmine\\player\\Player;
@@ -106,41 +115,53 @@ class Main extends PluginBase implements Listener {
     }
 
     public function onJoin(PlayerJoinEvent $event): void {
-        $player = $event->getPlayer();
+        $player = $event.getPlayer();
         $this->sendForm($player);
     }
 
     public function sendForm(Player $player): void {
-        $form = new SimpleForm(function (Player $player, ?int $data) {
+        const form = new SimpleForm(function (Player $player, ?int $data) {
             if ($data === null) {
                 return;
             }
-            $player->sendMessage("You selected option " . $data);
+            $player.sendMessage("You selected option " . $data);
         });
 
-        $form->setTitle("Example Form");
-        $form->setContent("Please select an option:");
-        $form->addButton("Option 1");
-        $form->addButton("Option 2");
+        form.setTitle("Example Form");
+        form.setContent("Please select an option:");
+        form.addButton("Option 1");
+        form.addButton("Option 2");
 
-        $player->sendForm($form);
+        $player.sendForm(form);
     }
 }
 ?>
             `;
 
-            const zip = new JSZip();
-            zip.file("plugin.yml", pluginYml);
-            zip.file("src/${pluginName}/Main.php", mainPhp);
+            if (downloadType === "zip") {
+                const zip = new JSZip();
+                zip.file("plugin.yml", pluginYml);
+                zip.file(`src/${pluginNamespace}/Main.php`, mainPhp);
 
-            zip.generateAsync({ type: "blob" }).then(function (content) {
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(content);
-                a.download = `${pluginName}.zip`;
-                a.click();
-            });
+                zip.generateAsync({ type: "blob" }).then(function (content) {
+                    const a = document.createElement("a");
+                    a.href = URL.createObjectURL(content);
+                    a.download = `${pluginName}.zip`;
+                    a.click();
+                });
+            } else if (downloadType === "phar") {
+                const phar = new JSZip();
+                phar.file("plugin.yml", pluginYml);
+                phar.file(`src/${pluginNamespace}/Main.php`, mainPhp);
+
+                phar.generateAsync({ type: "blob" }).then(function (content) {
+                    const a = document.createElement("a");
+                    a.href = URL.createObjectURL(content);
+                    a.download = `${pluginName}.phar`;
+                    a.click();
+                });
+            }
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 </body>
 </html>
