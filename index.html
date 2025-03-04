@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register and Login</title>
+<title>3D Register and Login Forms</title>
 <style>
     body {
         margin: 0;
@@ -48,11 +48,13 @@
         position: fixed;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%) perspective(1000px);
         background-color: #ffffff;
         padding: 20px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         z-index: 2;
+        border-radius: 10px;
+        transform: rotateX(15deg) rotateY(15deg);
     }
     .modal input {
         display: block;
@@ -63,6 +65,11 @@
     .modal button {
         padding: 10px;
         width: 100%;
+    }
+    .success-message {
+        display: none;
+        color: green;
+        font-weight: bold;
     }
 </style>
 </head>
@@ -75,16 +82,19 @@
 
     <div id="registerModal" class="modal">
         <h2>Register</h2>
-        <input type="text" placeholder="Username">
-        <input type="password" placeholder="Password">
-        <button onclick="closeModal('register')">Submit</button>
+        <input type="email" id="registerEmail" placeholder="Email">
+        <input type="text" id="registerUsername" placeholder="Username">
+        <input type="password" id="registerPassword" placeholder="Password">
+        <button onclick="submitForm('register')">Submit</button>
+        <div id="registerSuccess" class="success-message">Registration Successful!</div>
     </div>
 
     <div id="loginModal" class="modal">
         <h2>Login</h2>
-        <input type="text" placeholder="Username">
-        <input type="password" placeholder="Password">
-        <button onclick="closeModal('login')">Submit</button>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="submitForm('login')">Submit</button>
+        <div id="loginSuccess" class="success-message">Login Successful!</div>
     </div>
 
     <script>
@@ -93,6 +103,13 @@
         }
         function closeModal(type) {
             document.getElementById(type + 'Modal').style.display = 'none';
+        }
+        function submitForm(type) {
+            closeModal(type);
+            document.getElementById(type + 'Success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById(type + 'Success').style.display = 'none';
+            }, 2000);
         }
     </script>
 </body>
