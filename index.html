@@ -66,6 +66,9 @@
             <label for="pluginAuthor">Plugin Author:</label>
             <input type="text" id="pluginAuthor" name="pluginAuthor" required>
 
+            <label for="command">Command:</label>
+            <input type="text" id="command" name="command" required>
+
             <label for="downloadType">Download Type:</label>
             <select id="downloadType" name="downloadType" required>
                 <option value="zip">ZIP</option>
@@ -84,6 +87,7 @@
             const pluginName = document.getElementById('pluginName').value;
             const pluginDescription = document.getElementById('pluginDescription').value;
             const pluginAuthor = document.getElementById('pluginAuthor').value;
+            const command = document.getElementById('command').value;
             const downloadType = document.getElementById('downloadType').value;
             const pluginNamespace = pluginName.replace(/\s+/g, '');  // Remove spaces for namespace
 
@@ -94,6 +98,11 @@ version: 1.0.0
 api: [5.0.0]
 author: ${pluginAuthor}
 description: ${pluginDescription}
+commands:
+  ${command}:
+    description: Example command description
+    usage: /${command}
+    permission: ${pluginNamespace}.command.${command}
             `;
 
             const mainPhp = `
@@ -105,8 +114,8 @@ use pocketmine\\plugin\\PluginBase;
 use pocketmine\\player\\Player;
 use pocketmine\\event\\Listener;
 use pocketmine\\event\\player\\PlayerJoinEvent;
-use pocketmine\\form\\Form;
-use pocketmine\\form\\SimpleForm;
+use pocketmine\\command\\Command;
+use pocketmine\\command\\CommandSender;
 
 class Main extends PluginBase implements Listener {
 
@@ -114,25 +123,37 @@ class Main extends PluginBase implements Listener {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
 
+    public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool {
+        if($command->getName() === "${command}") {
+            if($sender instanceof Player) {
+                $sender->sendMessage("You executed the /${command} command!");
+            } else {
+                $sender->sendMessage("This command can only be used in-game.");
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function onJoin(PlayerJoinEvent $event): void {
-        $player = $event.getPlayer();
+        $player = $event->getPlayer();
         $this->sendForm($player);
     }
 
     public function sendForm(Player $player): void {
-        const form = new SimpleForm(function (Player $player, ?int $data) {
+        $form = new SimpleForm(function (Player $player, ?int $data) {
             if ($data === null) {
                 return;
             }
-            $player.sendMessage("You selected option " . $data);
+            $player->sendMessage("You selected option " . $data);
         });
 
-        form.setTitle("Example Form");
-        form.setContent("Please select an option:");
-        form.addButton("Option 1");
-        form.addButton("Option 2");
+        $form->setTitle("Example Form");
+        $form->setContent("Please select an option:");
+        $form->addButton("Option 1");
+        $form->addButton("Option 2");
 
-        $player.sendForm(form);
+        $player->sendForm($form);
     }
 }
 ?>
