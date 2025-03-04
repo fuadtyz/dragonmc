@@ -3,118 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ubuntu Terminal</title>
+    <title>Permainan 2D Berjelajah</title>
     <style>
         body {
-            background-color: #2c001e;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
         }
 
-        .terminal {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 5px;
-            width: 80%;
-            max-width: 800px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        #output {
-            height: 300px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-
-        .input-line {
-            display: flex;
-        }
-
-        .prompt {
-            margin-right: 10px;
-        }
-
-        input {
-            background: none;
-            border: none;
-            color: #fff;
-            flex: 1;
-            outline: none;
-            font-size: 16px;
+        canvas {
+            border: 1px solid #000;
+            background-color: #fff;
         }
     </style>
 </head>
 <body>
-    <div class="terminal">
-        <div id="output"></div>
-        <div class="input-line">
-            <span class="prompt">user@ubuntu:~$</span>
-            <input type="text" id="commandInput" autofocus>
-        </div>
-    </div>
+    <h1>Permainan 2D Berjelajah</h1>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
     <script>
-        document.getElementById('commandInput').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                const command = e.target.value;
-                e.target.value = '';
-                processCommand(command);
+        const canvas = document.getElementById('gameCanvas');
+        const context = canvas.getContext('2d');
+
+        let player = {
+            x: 50,
+            y: 50,
+            width: 50,
+            height: 50,
+            color: 'blue',
+            speed: 5
+        };
+
+        let keys = {
+            right: false,
+            left: false,
+            up: false,
+            down: false
+        };
+
+        function drawPlayer() {
+            context.fillStyle = player.color;
+            context.fillRect(player.x, player.y, player.width, player.height);
+        }
+
+        function clearCanvas() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function update() {
+            clearCanvas();
+            drawPlayer();
+            movePlayer();
+            requestAnimationFrame(update);
+        }
+
+        function movePlayer() {
+            if (keys.right && player.x + player.width < canvas.width) {
+                player.x += player.speed;
             }
+            if (keys.left && player.x > 0) {
+                player.x -= player.speed;
+            }
+            if (keys.up && player.y > 0) {
+                player.y -= player.speed;
+            }
+            if (keys.down && player.y + player.height < canvas.height) {
+                player.y += player.speed;
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') keys.right = true;
+            if (e.key === 'ArrowLeft') keys.left = true;
+            if (e.key === 'ArrowUp') keys.up = true;
+            if (e.key === 'ArrowDown') keys.down = true;
         });
 
-        function processCommand(command) {
-            const outputDiv = document.getElementById('output');
-            const newLine = document.createElement('div');
-            newLine.textContent = `user@ubuntu:~$ ${command}`;
-            outputDiv.appendChild(newLine);
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowRight') keys.right = false;
+            if (e.key === 'ArrowLeft') keys.left = false;
+            if (e.key === 'ArrowUp') keys.up = false;
+            if (e.key === 'ArrowDown') keys.down = false;
+        });
 
-            let result = '';
-
-            switch(command.toLowerCase()) {
-                case 'help':
-                    result = 'Available commands: help, clear, date, echo [message], ls, pwd, uname -a, sudo su, git [command]';
-                    break;
-                case 'clear':
-                    outputDiv.innerHTML = '';
-                    break;
-                case 'date':
-                    result = new Date().toString();
-                    break;
-                case 'ls':
-                    result = 'Documents Downloads Music Pictures Videos';
-                    break;
-                case 'pwd':
-                    result = '/home/user';
-                    break;
-                case 'uname -a':
-                    result = 'Linux ubuntu 5.8.0-43-generic #49~20.04.1-Ubuntu SMP Tue Feb 9 06:20:34 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux';
-                    break;
-                case 'sudo su':
-                    result = 'You are now root';
-                    break;
-                default:
-                    if (command.startsWith('echo ')) {
-                        result = command.slice(5);
-                    } else if (command.startsWith('git ')) {
-                        result = `Executing git command: ${command.slice(4)}`;
-                    } else {
-                        result = `Command "${command}" not found`;
-                    }
-            }
-
-            if (result) {
-                const resultDiv = document.createElement('div');
-                resultDiv.textContent = result;
-                outputDiv.appendChild(resultDiv);
-            }
-
-            outputDiv.scrollTop = outputDiv.scrollHeight;
-        }
+        update();
     </script>
 </body>
 </html>
