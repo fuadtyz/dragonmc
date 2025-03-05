@@ -25,80 +25,43 @@
             text-align: center;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-
-        nav .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            padding: 0;
-        }
-
-        nav ul li {
-            margin: 0 15px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-        }
-
-        .hero-text h1 {
+        .hero h1 {
             font-size: 60px;
             margin: 10px 0;
         }
 
-        .hero-text p {
+        .hero p {
             font-size: 20px;
             margin-bottom: 20px;
         }
 
-        .hero-text .btn {
-            background-color: #ff5722;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        .hero-text .btn:hover {
-            background-color: #e64a19;
-        }
-
         .action-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 50px;
             display: flex;
             justify-content: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
 
         .action-container a {
             background-color: #0078d4;
             color: white;
-            padding: 15px 25px;
+            padding: 15px 30px;
             border-radius: 8px;
             text-decoration: none;
             font-size: 18px;
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
         }
 
         .action-container a:hover {
             background-color: #005a9e;
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .vote-btn {
@@ -117,43 +80,76 @@
             background-color: #e67e22;
         }
 
+        section {
+            padding: 50px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         footer {
             background-color: #333;
             color: #aaa;
             padding: 20px;
             text-align: center;
         }
+
+        #visitor-counter {
+            font-size: 24px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <header class="hero">
-        <nav>
-            <a href="#" class="logo">Dragon MC</a>
-            <ul>
-                <li><a href="#about">Tentang</a></li>
-                <li><a href="#contact">Kontak</a></li>
-            </ul>
-        </nav>
-        <div class="hero-text">
-            <h1>Selamat Datang di Dragon MC</h1>
-            <p>Bergabunglah ke dunia Minecraft kami dan nikmati petualangan seru!</p>
-        </div>
+        <h1>Selamat Datang di Dragon MC</h1>
+        <p>Bergabunglah ke dunia Minecraft kami dan nikmati petualangan epik!</p>
+        <div id="visitor-counter">👥 Pengunjung: <span id="visitor-count">0</span></div>
     </header>
+
     <section class="action-container">
         <a href="https://s.id/wa-dragonmc" class="btn">Join Grup</a>
         <a href="https://s.id/vote-dragonmc" class="btn vote-btn">Vote Server</a>
         <a href="https://wa.me/62895422523628" class="btn buy-btn">Beli Rank</a>
-        <a href="#" id="joinMinecraft" class="btn">Join Minecraft</a>
+        <a href="minecraft://?addExternalServer=DragonMc:play.dragonmc.biz.id:19132" class="btn">Join Minecraft</a>
     </section>
+
+    <section id="about">
+        <h2>Tentang Dragon MC</h2>
+        <p>Dragon MC adalah server Minecraft berbasis komunitas dengan build memukau, gameplay menarik, dan komunitas yang ramah. Bergabunglah hari ini!</p>
+    </section>
+
     <footer>
         <p>&copy; 2025 Dragon MC. Semua hak dilindungi.</p>
     </footer>
+
     <script>
-        document.getElementById('joinMinecraft').addEventListener('click', function () {
-            const serverAddress = 'play.dragonmc.biz.id';
-            const serverPort = 19132;
-            alert(`Open Minecraft, add a server, and input:\nServer Address: ${serverAddress}\nPort: ${serverPort}`);
-        });
+        // Live Visitor Counter
+        const visitorCount = document.getElementById('visitor-count');
+        let count = Math.floor(Math.random() * 1000) + 100; // Simulasi pengunjung
+        visitorCount.innerText = count;
+
+        // Scroll Animation
+        const sections = document.querySelectorAll('section');
+
+        function revealSections() {
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (sectionTop < windowHeight - 100) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealSections);
+        revealSections(); // Reveal on load
     </script>
 </body>
 </html>
