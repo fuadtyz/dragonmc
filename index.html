@@ -3,185 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plugin Generator PmmP5</title>
+    <meta name="description" content="Dragon MC - Your Ultimate Minecraft Server!">
+    <title>Dragon MC</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            background-color: #1b1b2f;
+        }
+
+        .hero {
+            background: url('https://source.unsplash.com/1600x900/?minecraft') no-repeat center center/cover;
+            height: 100vh;
+            color: white;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            text-align: center;
         }
 
-        .container {
-            background: white;
+        nav {
+            display: flex;
+            justify-content: space-between;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #007BFF;
+        nav .logo {
+            font-size: 24px;
+            font-weight: bold;
             color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
+            text-decoration: none;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+        }
+
+        .hero-text h1 {
+            font-size: 60px;
+            margin: 10px 0;
+        }
+
+        .hero-text p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hero-text .btn {
+            background-color: #ff5722;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .hero-text .btn:hover {
+            background-color: #e64a19;
+        }
+
+        .action-container {
+            padding: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .action-container a {
+            background-color: #0078d4;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .action-container a:hover {
+            background-color: #005a9e;
+            transform: scale(1.05);
+        }
+
+        .vote-btn {
+            background-color: #4caf50;
+        }
+
+        .vote-btn:hover {
+            background-color: #388e3c;
+        }
+
+        .buy-btn {
+            background-color: #ff9800;
+        }
+
+        .buy-btn:hover {
+            background-color: #e67e22;
+        }
+
+        footer {
+            background-color: #333;
+            color: #aaa;
+            padding: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Plugin Generator</h1>
-        <form id="pluginForm">
-            <label for="pluginName">Plugin Name:</label>
-            <input type="text" id="pluginName" name="pluginName" required>
-
-            <label for="pluginDescription">Plugin Description:</label>
-            <textarea id="pluginDescription" name="pluginDescription" required></textarea>
-
-            <label for="pluginAuthor">Plugin Author:</label>
-            <input type="text" id="pluginAuthor" name="pluginAuthor" required>
-
-            <label for="command">Command:</label>
-            <input type="text" id="command" name="command" required>
-
-            <label for="downloadType">Download Type:</label>
-            <select id="downloadType" name="downloadType" required>
-                <option value="zip">ZIP</option>
-                <option value="phar">PHAR</option>
-            </select>
-
-            <button type="submit">Generate Plugin</button>
-        </form>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <header class="hero">
+        <nav>
+            <a href="#" class="logo">Dragon MC</a>
+            <ul>
+                <li><a href="#about">Tentang</a></li>
+                <li><a href="#contact">Kontak</a></li>
+            </ul>
+        </nav>
+        <div class="hero-text">
+            <h1>Selamat Datang di Dragon MC</h1>
+            <p>Bergabunglah ke dunia Minecraft kami dan nikmati petualangan seru!</p>
+        </div>
+    </header>
+    <section class="action-container">
+        <a href="https://s.id/wa-dragonmc" class="btn">Join Grup</a>
+        <a href="https://s.id/vote-dragonmc" class="btn vote-btn">Vote Server</a>
+        <a href="https://wa.me/62895422523628" class="btn buy-btn">Beli Rank</a>
+        <a href="#" id="joinMinecraft" class="btn">Join Minecraft</a>
+    </section>
+    <footer>
+        <p>&copy; 2025 Dragon MC. Semua hak dilindungi.</p>
+    </footer>
     <script>
-        document.getElementById('pluginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const pluginName = document.getElementById('pluginName').value;
-            const pluginDescription = document.getElementById('pluginDescription').value;
-            const pluginAuthor = document.getElementById('pluginAuthor').value;
-            const command = document.getElementById('command').value;
-            const downloadType = document.getElementById('downloadType').value;
-            const pluginNamespace = pluginName.replace(/\s+/g, '');  // Remove spaces for namespace
-
-            const pluginYml = `
-name: ${pluginName}
-main: ${pluginNamespace}\\Main
-version: 1.0.0
-api: [5.0.0]
-author: ${pluginAuthor}
-description: ${pluginDescription}
-commands:
-  ${command}:
-    description: Example command description
-    usage: /${command}
-    permission: ${pluginNamespace}.command.${command}
-            `;
-
-            const mainPhp = `
-<?php
-
-namespace ${pluginNamespace};
-
-use pocketmine\\plugin\\PluginBase;
-use pocketmine\\player\\Player;
-use pocketmine\\event\\Listener;
-use pocketmine\\event\\player\\PlayerJoinEvent;
-use pocketmine\\command\\Command;
-use pocketmine\\command\\CommandSender;
-
-class Main extends PluginBase implements Listener {
-
-    public function onEnable(): void {
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
-    }
-
-    public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool {
-        if($command->getName() === "${command}") {
-            if($sender instanceof Player) {
-                $sender->sendMessage("You executed the /${command} command!");
-            } else {
-                $sender->sendMessage("This command can only be used in-game.");
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public function onJoin(PlayerJoinEvent $event): void {
-        $player = $event->getPlayer();
-        $this->sendForm($player);
-    }
-
-    public function sendForm(Player $player): void {
-        $form = new SimpleForm(function (Player $player, ?int $data) {
-            if ($data === null) {
-                return;
-            }
-            $player->sendMessage("You selected option " . $data);
-        });
-
-        $form->setTitle("Example Form");
-        $form->setContent("Please select an option:");
-        $form->addButton("Option 1");
-        $form->addButton("Option 2");
-
-        $player->sendForm($form);
-    }
-}
-?>
-            `;
-
-            if (downloadType === "zip") {
-                const zip = new JSZip();
-                zip.file("plugin.yml", pluginYml);
-                zip.file(`src/${pluginNamespace}/Main.php`, mainPhp);
-
-                zip.generateAsync({ type: "blob" }).then(function (content) {
-                    const a = document.createElement("a");
-                    a.href = URL.createObjectURL(content);
-                    a.download = `${pluginName}.zip`;
-                    a.click();
-                });
-            } else if (downloadType === "phar") {
-                const phar = new JSZip();
-                phar.file("plugin.yml", pluginYml);
-                phar.file(`src/${pluginNamespace}/Main.php`, mainPhp);
-
-                phar.generateAsync({ type: "blob" }).then(function (content) {
-                    const a = document.createElement("a");
-                    a.href = URL.createObjectURL(content);
-                    a.download = `${pluginName}.phar`;
-                    a.click();
-                });
-            }
+        document.getElementById('joinMinecraft').addEventListener('click', function () {
+            const serverAddress = 'play.dragonmc.biz.id';
+            const serverPort = 19132;
+            alert(`Open Minecraft, add a server, and input:\nServer Address: ${serverAddress}\nPort: ${serverPort}`);
         });
     </script>
 </body>
