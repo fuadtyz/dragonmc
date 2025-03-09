@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dragon MC</title>
+  <title>Dragon MC - Legendary Server</title>
   <style>
     body {
       font-family: 'Georgia', serif;
@@ -93,7 +93,7 @@
   <div class="container">
     <header>
       <h1>Dragon MC</h1>
-      <p>Server Minecraft Terhebat di Era Ini</p>
+      <p>Server Minecraft Legendaris untuk Para Jawara!</p>
     </header>
     <div class="server-status" id="server-status">
       <p>Loading status server...</p>
@@ -113,30 +113,44 @@
   </div>
 
   <script>
-    // Simulasi status server dengan jumlah pemain dinamis
-    function updateServerStatus() {
-      const isOnline = true; // Status server online
-      const minPlayers = 200; // Minimum jumlah pemain
-      const maxPlayers = 500; // Maksimum jumlah pemain
-      const playersOnline = Math.floor(Math.random() * (maxPlayers - minPlayers + 1)) + minPlayers;
+    // Mengambil data status server dari query.php
+    async function fetchServerStatus() {
+      try {
+        const response = await fetch('query.php'); // Pastikan query.php tersedia di server
+        const data = await response.json();
 
-      // Update status server
-      document.getElementById('server-status').innerHTML = isOnline
-        ? `<p><span class="status-online">Server Online</span> · ${playersOnline} Pemain Sedang Online · Main sekarang!</p>`
-        : '<p><span class="status-offline">Server Offline</span></p>';
-
-      // Update jumlah pemain online
-      document.getElementById('server-info').innerHTML = `
-        <p>Pemain Online: <strong>${playersOnline}</strong></p>
-        <p>Versi Server: <strong>1.21.62+</strong></p>
-      `;
+        if (data.online) {
+          document.getElementById('server-status').innerHTML = `
+            <p><span class="status-online">Server Online</span> · ${data.players}/${data.max_players} Players · Main sekarang!</p>
+          `;
+          document.getElementById('server-info').innerHTML = `
+            <p>Pemain Online: <strong>${data.players}</strong></p>
+            <p>Versi Server: <strong>1.21.62+</strong></p>
+          `;
+        } else {
+          document.getElementById('server-status').innerHTML = `
+            <p><span class="status-offline">Server Offline</span></p>
+          `;
+          document.getElementById('server-info').innerHTML = `
+            <p>Pemain Online: <strong>0</strong></p>
+          `;
+        }
+      } catch (error) {
+        console.error('Error fetching server status:', error);
+        document.getElementById('server-status').innerHTML = `
+          <p><span class="status-offline">Server Offline (Error)</span></p>
+        `;
+        document.getElementById('server-info').innerHTML = `
+          <p>Pemain Online: <strong>0</strong></p>
+        `;
+      }
     }
 
-    // Update data setiap 5 detik
-    setInterval(updateServerStatus, 5000);
+    // Update status server setiap 5 detik
+    setInterval(fetchServerStatus, 5000);
 
-    // Panggilan pertama saat halaman dimuat
-    updateServerStatus();
+    // Panggilan awal saat halaman dimuat
+    fetchServerStatus();
   </script>
 </body>
 </html>
