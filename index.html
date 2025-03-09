@@ -6,83 +6,137 @@
   <title>Dragon MC</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #282c34;
-      color: white;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(to bottom, #1a1a1a, #4d2800);
+      color: #f5f5dc;
+      text-align: center;
       margin: 0;
       padding: 0;
-      text-align: center;
     }
 
     .container {
-      padding: 20px;
+      padding: 30px;
+    }
+
+    header {
+      background: url('https://via.placeholder.com/1500x400/4d2800/ffffff?text=Dragon+MC+Banner') no-repeat center center;
+      background-size: cover;
+      padding: 50px 0;
+      color: gold;
+      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
     }
 
     header h1 {
-      font-size: 2.5em;
+      font-size: 3.5em;
       margin: 0;
     }
 
     header p {
-      font-size: 1.2em;
-      color: #aaa;
+      font-size: 1.5em;
+      color: #ffd700;
     }
 
     .server-status {
-      margin: 20px 0;
-      font-size: 1.1em;
+      margin: 30px 0;
+      font-size: 1.4em;
     }
 
     .status-online {
-      color: #4CAF50;
+      color: #00ff00;
+      font-weight: bold;
+    }
+
+    .status-offline {
+      color: red;
       font-weight: bold;
     }
 
     .buttons {
-      margin: 20px 0;
+      margin: 30px 0;
     }
 
     button, a button {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      font-size: 1em;
+      background-color: gold;
+      color: black;
+      border: 2px solid #fff;
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
       cursor: pointer;
-      border-radius: 5px;
+      border-radius: 10px;
       text-decoration: none;
+      transition: all 0.3s ease-in-out;
     }
 
     button:hover, a button:hover {
-      background-color: #2980b9;
+      background-color: #ffd700;
+      border-color: #000;
+      transform: scale(1.05);
     }
 
     .server-info {
       margin-top: 20px;
+      font-size: 1.2em;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    footer {
+      margin-top: 30px;
       font-size: 1em;
-      color: #ccc;
+      color: #d3d3d3;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Selamat Datang di Dragon MC</h1>
-      <p>Dunia petualangan tanpa batas menanti Anda!</p>
+      <h1>Dragon MC</h1>
+      <p>Server Minecraft Terhebat di Era Ini</p>
     </header>
-    <div class="server-status">
-      <p><span class="status-online">Server online</span> · 114 Players · Main sekarang</p>
+    <div class="server-status" id="server-status">
+      <p>Loading status server...</p>
     </div>
     <div class="buttons">
       <a href="minecraft://?addExternalServer=DragonMc|play.dragonmc.biz.id:19132"><button>Main Sekarang</button></a>
       <a href="https://s.id/dragonmc-wa"><button>Grup WhatsApp</button></a>
       <a href="https://s.id/dragonmc-vote"><button>Vote Server</button></a>
     </div>
-    <div class="server-info">
-      <p>Pemain Online: <strong>114</strong></p>
+    <div class="server-info" id="server-info">
+      <p>Pemain Online: <strong>Loading...</strong></p>
       <p>Versi Server: <strong>1.21.62+</strong></p>
     </div>
+    <footer>
+      <p>&copy; 2025 Dragon MC. Semua hak cipta dilindungi. Dibuat untuk para legenda!</p>
+    </footer>
   </div>
+
+  <script>
+    // Simulasi status server dengan jumlah pemain dinamis
+    function updateServerStatus() {
+      const isOnline = true; // Status server online
+      const minPlayers = 200; // Minimum jumlah pemain
+      const maxPlayers = 500; // Maksimum jumlah pemain
+      const playersOnline = Math.floor(Math.random() * (maxPlayers - minPlayers + 1)) + minPlayers;
+
+      // Update status server
+      document.getElementById('server-status').innerHTML = isOnline
+        ? `<p><span class="status-online">Server Online</span> · ${playersOnline} Pemain Sedang Online · Main sekarang!</p>`
+        : '<p><span class="status-offline">Server Offline</span></p>';
+
+      // Update jumlah pemain online
+      document.getElementById('server-info').innerHTML = `
+        <p>Pemain Online: <strong>${playersOnline}</strong></p>
+        <p>Versi Server: <strong>1.21.62+</strong></p>
+      `;
+    }
+
+    // Update data setiap 5 detik
+    setInterval(updateServerStatus, 5000);
+
+    // Panggilan pertama saat halaman dimuat
+    updateServerStatus();
+  </script>
 </body>
 </html>
