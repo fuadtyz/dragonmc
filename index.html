@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top Up Game</title>
+  <title>Top Up Game dengan Validasi ID</title>
   <style>
-    /* Reset dan gaya utama */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -54,6 +53,22 @@
       background-color: #0056b3;
     }
 
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .info-dana {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
     .footer {
       text-align: center;
       margin-top: 20px;
@@ -75,7 +90,13 @@
   <div class="container">
     <!-- Header -->
     <h1>Top Up Game</h1>
-    <p style="text-align: center;">Dapatkan kredit game favorit Anda dengan mudah!</p>
+    <p style="text-align: center;">Top-up Diamond atau Kredit dengan pembayaran DANA!</p>
+
+    <!-- Info Pembayaran -->
+    <div class="info-dana">
+      <p><strong>Transfer Pembayaran ke:</strong></p>
+      <p>Nomor DANA: <strong>085697067873</strong></p>
+    </div>
 
     <!-- Form Top Up -->
     <form id="topupForm">
@@ -92,6 +113,7 @@
       <!-- Masukkan ID Pemain -->
       <label for="playerId">Masukkan ID Pemain:</label>
       <input type="text" id="playerId" name="playerId" placeholder="Contoh: 123456789" required>
+      <div class="error" id="idError">ID Pemain tidak valid! Harap periksa kembali.</div>
 
       <!-- Pilih Jumlah Top Up -->
       <label for="amount">Pilih Nominal Top Up:</label>
@@ -103,8 +125,8 @@
         <option value="500">500 Diamond/Credit</option>
       </select>
 
-      <!-- Tombol Bayar -->
-      <button type="submit">Bayar Sekarang</button>
+      <!-- Tombol Kirim -->
+      <button type="submit">Proses Top-Up</button>
     </form>
   </div>
 
@@ -114,23 +136,33 @@
   </div>
 
   <script>
-    // Menangani pengiriman formulir
+    // Menangani validasi ID pemain
+    const validGamePatterns = {
+      "Free Fire": /^[0-9]{9,12}$/, // ID Free Fire (9-12 digit angka)
+      "Mobile Legends": /^[0-9]{7,10}$/, // ID Mobile Legends (7-10 digit angka)
+      "PUBG Mobile": /^[0-9]{9,12}$/, // ID PUBG Mobile (9-12 digit angka)
+      "Genshin Impact": /^[0-9]{9}$/ // ID Genshin Impact (9 digit angka)
+    };
+
     document.getElementById("topupForm").addEventListener("submit", function(event) {
       event.preventDefault();
-      
+
       // Ambil data dari formulir
       const game = document.getElementById("game").value;
       const playerId = document.getElementById("playerId").value;
       const amount = document.getElementById("amount").value;
 
-      // Validasi sederhana
-      if (!game || !playerId || !amount) {
-        alert("Harap isi semua kolom!");
+      // Validasi ID pemain berdasarkan game yang dipilih
+      const pattern = validGamePatterns[game];
+      if (!pattern.test(playerId)) {
+        document.getElementById("idError").style.display = "block";
         return;
+      } else {
+        document.getElementById("idError").style.display = "none";
       }
 
-      // Simulasi pemrosesan pembayaran
-      alert(`Top Up berhasil!\nGame: ${game}\nID Pemain: ${playerId}\nNominal: ${amount}`);
+      // Konfirmasi pembayaran
+      alert(`Instruksi:\n1. Transfer ke DANA: 085697067873\n2. Nominal sesuai top-up Anda\n\nDETAIL TOP-UP:\nGame: ${game}\nID Pemain: ${playerId}\nNominal: ${amount} Diamond/Credit\n\nSetelah transfer, top-up akan diproses oleh Admin.`);
     });
   </script>
 </body>
