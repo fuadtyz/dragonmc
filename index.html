@@ -11,13 +11,13 @@
       font-family: Arial, sans-serif;
       background-color: #1a1a1a;
       color: white;
-      text-align: center;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
+      text-align: center;
     }
 
     header {
@@ -36,6 +36,22 @@
       color: #fff;
       margin: 10px 0 0;
       font-size: 1.2em;
+    }
+
+    nav {
+      margin-top: 15px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      margin: 0 15px;
+      font-size: 1em;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #FFD700;
     }
 
     section {
@@ -83,12 +99,49 @@
     <header>
       <h1>Dragon MC</h1>
       <p>Server Minecraft Legendaris</p>
+      <nav>
+        <a href="#status">Status Server</a>
+        <a href="#leaderboard">Leaderboard</a>
+        <a href="#event">Event</a>
+        <a href="#shop">Shop</a>
+      </nav>
     </header>
 
-    <!-- Join Minecraft -->
-    <section id="join">
-      <h2>Gabung ke Server</h2>
-      <a href="minecraft://?addExternalServer=DragonMc|play.dragonmc.biz.id:19132"><button>Join Minecraft</button></a>
+    <!-- Status Server -->
+    <section id="status">
+      <h2>Status Server</h2>
+      <div id="server-status">
+        <p>Loading status server...</p>
+      </div>
+    </section>
+
+    <!-- Leaderboard -->
+    <section id="leaderboard">
+      <h2>Leaderboard</h2>
+      <div class="leaderboard-list">
+        <div class="player">#1 <strong>PlayerLegend</strong> - 1000 Kills</div>
+        <div class="player">#2 <strong>DragonSlayer</strong> - 900 Kills</div>
+        <div class="player">#3 <strong>Warrior21</strong> - 850 Kills</div>
+      </div>
+    </section>
+
+    <!-- Event Section -->
+    <section id="event">
+      <h2>Event</h2>
+      <p>Turnamen PvP dimulai dalam:</p>
+      <p id="countdown">Loading...</p>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop">
+      <h2>Shop</h2>
+      <p>Dukung server kami dengan membeli paket VIP dan item eksklusif!</p>
+      <button>Buka Shop</button>
+    </section>
+
+    <!-- Grup WhatsApp dan Vote -->
+    <section id="links">
+      <h2>Grup WhatsApp & Vote</h2>
       <a href="https://s.id/wa-dragonmc"><button>Gabung Grup WhatsApp</button></a>
       <a href="https://s.id/vote-dragonmc"><button>Vote Server</button></a>
     </section>
@@ -98,5 +151,59 @@
       <p>&copy; 2025 Dragon MC. Semua Hak Cipta Dilindungi.</p>
     </footer>
   </div>
+
+  <script>
+    // Mengambil data status server
+    async function fetchServerStatus() {
+      try {
+        const response = await fetch('query.php'); // Pastikan file query.php sudah tersedia
+        const data = await response.json();
+
+        if (data.online) {
+          document.getElementById('server-status').innerHTML = `
+            <p><span class="status-online">Server Online</span></p>
+            <p>Pemain Online: <strong>${data.players}</strong> / ${data.max_players}</p>
+            <p>Versi: <strong>${data.version}</strong></p>
+          `;
+        } else {
+          document.getElementById('server-status').innerHTML = `
+            <p><span class="status-offline">Server Offline</span></p>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('server-status').innerHTML = `
+          <p>Error: Tidak dapat memuat status server.</p>
+        `;
+      }
+    }
+
+    // Update status server setiap 5 detik
+    setInterval(fetchServerStatus, 5000);
+    fetchServerStatus();
+
+    // Countdown untuk event
+    const eventDate = new Date("2025-04-01T00:00:00").getTime();
+    const countdownElement = document.getElementById("countdown");
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+
+      if (distance < 0) {
+        countdownElement.innerHTML = "Event Sedang Berlangsung!";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownElement.innerHTML = `${days} Hari ${hours} Jam ${minutes} Menit ${seconds} Detik`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
 </body>
 </html>
