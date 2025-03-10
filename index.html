@@ -6,151 +6,97 @@
   <title>Dragon MC - Legendary Server</title>
   <style>
     body {
-      font-family: 'Georgia', serif;
-      background: linear-gradient(to bottom, #1a1a1a, #4d2800);
-      color: #f5f5dc;
-      text-align: center;
       margin: 0;
       padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #1a1a1a;
+      color: white;
+      text-align: center;
     }
 
     .container {
-      padding: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
     }
 
     header {
-      background: url('https://via.placeholder.com/1500x400/4d2800/ffffff?text=Dragon+MC+Banner') no-repeat center center;
-      background-size: cover;
-      padding: 50px 0;
-      color: gold;
-      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+      background-color: #333;
+      padding: 20px 0;
+      margin-bottom: 30px;
     }
 
     header h1 {
-      font-size: 3.5em;
+      color: #FFD700;
+      font-size: 2.5em;
       margin: 0;
     }
 
     header p {
-      font-size: 1.5em;
-      color: #ffd700;
+      color: #fff;
+      margin: 10px 0 0;
+      font-size: 1.2em;
     }
 
-    .server-status {
+    section {
       margin: 30px 0;
-      font-size: 1.4em;
+      padding: 20px;
+      background-color: #282828;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     }
 
-    .status-online {
-      color: #00ff00;
-      font-weight: bold;
-    }
-
-    .status-offline {
-      color: red;
-      font-weight: bold;
-    }
-
-    .buttons {
-      margin: 30px 0;
+    section h2 {
+      margin-bottom: 15px;
+      color: #FFD700;
     }
 
     button, a button {
-      background-color: gold;
+      background-color: #FFD700;
       color: black;
-      border: 2px solid #fff;
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 1.2em;
-      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
       cursor: pointer;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: all 0.3s ease-in-out;
+      font-size: 1em;
+      font-weight: bold;
+      margin: 10px 5px;
+      transition: background-color 0.3s ease;
     }
 
     button:hover, a button:hover {
-      background-color: #ffd700;
-      border-color: #000;
-      transform: scale(1.05);
-    }
-
-    .server-info {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #ffffff;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      background-color: #e5c100;
     }
 
     footer {
+      background-color: #333;
+      padding: 20px;
       margin-top: 30px;
-      font-size: 1em;
-      color: #d3d3d3;
+      color: #ccc;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Header -->
     <header>
       <h1>Dragon MC</h1>
-      <p>Server Minecraft Legendaris untuk Para Jawara!</p>
+      <p>Server Minecraft Legendaris</p>
     </header>
-    <div class="server-status" id="server-status">
-      <p>Loading status server...</p>
-    </div>
-    <div class="buttons">
-      <a href="minecraft://?addExternalServer=DragonMc|play.dragonmc.biz.id:19132"><button>Main Sekarang</button></a>
-      <a href="https://s.id/dragonmc-wa"><button>Grup WhatsApp</button></a>
-      <a href="https://s.id/dragonmc-vote"><button>Vote Server</button></a>
-    </div>
-    <div class="server-info" id="server-info">
-      <p>Pemain Online: <strong>Loading...</strong></p>
-      <p>Versi Server: <strong>1.21.62+</strong></p>
-    </div>
+
+    <!-- Join Minecraft -->
+    <section id="join">
+      <h2>Gabung ke Server</h2>
+      <a href="minecraft://?addExternalServer=DragonMc|play.dragonmc.biz.id:19132"><button>Join Minecraft</button></a>
+      <a href="https://s.id/wa-dragonmc"><button>Gabung Grup WhatsApp</button></a>
+      <a href="https://s.id/vote-dragonmc"><button>Vote Server</button></a>
+    </section>
+
+    <!-- Footer -->
     <footer>
-      <p>&copy; 2025 Dragon MC. Semua hak cipta dilindungi. Dibuat untuk para legenda!</p>
+      <p>&copy; 2025 Dragon MC. Semua Hak Cipta Dilindungi.</p>
     </footer>
   </div>
-
-  <script>
-    // Mengambil data status server dari query.php
-    async function fetchServerStatus() {
-      try {
-        const response = await fetch('query.php'); // Pastikan query.php tersedia di server
-        const data = await response.json();
-
-        if (data.online) {
-          document.getElementById('server-status').innerHTML = `
-            <p><span class="status-online">Server Online</span> · ${data.players}/${data.max_players} Players · Main sekarang!</p>
-          `;
-          document.getElementById('server-info').innerHTML = `
-            <p>Pemain Online: <strong>${data.players}</strong></p>
-            <p>Versi Server: <strong>1.21.62+</strong></p>
-          `;
-        } else {
-          document.getElementById('server-status').innerHTML = `
-            <p><span class="status-offline">Server Offline</span></p>
-          `;
-          document.getElementById('server-info').innerHTML = `
-            <p>Pemain Online: <strong>0</strong></p>
-          `;
-        }
-      } catch (error) {
-        console.error('Error fetching server status:', error);
-        document.getElementById('server-status').innerHTML = `
-          <p><span class="status-offline">Server Offline (Error)</span></p>
-        `;
-        document.getElementById('server-info').innerHTML = `
-          <p>Pemain Online: <strong>0</strong></p>
-        `;
-      }
-    }
-
-    // Update status server setiap 5 detik
-    setInterval(fetchServerStatus, 5000);
-
-    // Panggilan awal saat halaman dimuat
-    fetchServerStatus();
-  </script>
 </body>
 </html>
