@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top Up Game dengan DANA</title>
+  <title>Top Up Game</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,12 +11,12 @@
       padding: 0;
       background-color: #f4f4f4;
       color: #333;
-      line-height: 1.6;
+      text-align: center;
     }
 
     .container {
-      max-width: 800px;
-      margin: 20px auto;
+      max-width: 600px;
+      margin: 30px auto;
       padding: 20px;
       background: white;
       border-radius: 8px;
@@ -24,12 +24,7 @@
     }
 
     h1 {
-      text-align: center;
       color: #007BFF;
-    }
-
-    label {
-      font-weight: bold;
     }
 
     select, input, button {
@@ -53,69 +48,19 @@
       background-color: #0056b3;
     }
 
-    .info-dana {
-      background-color: #007BFF;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .instructions {
-      background-color: #f9f9f9;
-      padding: 15px;
-      border-left: 4px solid #007BFF;
-      margin-bottom: 20px;
-    }
-
-    .footer {
-      text-align: center;
+    .qr-section {
       margin-top: 20px;
-      font-size: 0.9em;
-      color: #666;
-    }
-
-    .footer a {
-      color: #007BFF;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      border: 1px solid #ddd;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
     <h1>Top Up Game</h1>
-    <p style="text-align: center;">Top-up Diamond atau Kredit dengan pembayaran DANA!</p>
-
-    <!-- Info Pembayaran -->
-    <div class="info-dana">
-      <p><strong>Nomor DANA Tujuan:</strong></p>
-      <p><strong>085697067873</strong></p>
-      <p>Nama Penerima: <strong>Dragon MC Top Up</strong></p>
-    </div>
-
-    <!-- Langkah Transfer -->
-    <div class="instructions">
-      <h3>Langkah Transfer ke DANA:</h3>
-      <ol>
-        <li>Buka aplikasi DANA di perangkat Anda.</li>
-        <li>Pilih menu <strong>Kirim Uang</strong>.</li>
-        <li>Masukkan nomor tujuan: <strong>085697067873</strong>.</li>
-        <li>Masukkan jumlah yang sesuai dengan nominal top-up Anda.</li>
-        <li>Pada kolom catatan, tambahkan ID Game Anda.</li>
-        <li>Konfirmasi dan selesaikan pembayaran.</li>
-      </ol>
-      <p>Setelah transfer selesai, mohon konfirmasi ke Admin untuk memproses top-up Anda.</p>
-    </div>
-
-    <!-- Form Top Up -->
     <form id="topupForm">
-      <!-- Pilih Game -->
       <label for="game">Pilih Game:</label>
       <select id="game" name="game" required>
         <option value="" disabled selected>Pilih game...</option>
@@ -125,48 +70,33 @@
         <option value="Genshin Impact">Genshin Impact</option>
       </select>
 
-      <!-- Masukkan ID Pemain -->
       <label for="playerId">Masukkan ID Pemain:</label>
       <input type="text" id="playerId" name="playerId" placeholder="Contoh: 123456789" required>
 
-      <!-- Pilih Jumlah Top Up -->
-      <label for="amount">Pilih Nominal Top Up:</label>
+      <label for="amount">Pilih Nominal:</label>
       <select id="amount" name="amount" required>
         <option value="" disabled selected>Pilih nominal...</option>
-        <option value="10">10 Diamond/Credit</option>
-        <option value="50">50 Diamond/Credit</option>
-        <option value="100">100 Diamond/Credit</option>
-        <option value="500">500 Diamond/Credit</option>
+        <option value="10000">10.000 IDR</option>
+        <option value="50000">50.000 IDR</option>
+        <option value="100000">100.000 IDR</option>
       </select>
 
-      <!-- Tombol Kirim -->
-      <button type="submit">Lihat Instruksi Pembayaran</button>
+      <button type="submit">Bayar Sekarang</button>
     </form>
-  </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    <p>&copy; 2025 Top Up Game. Semua Hak Cipta Dilindungi. <a href="#">Kebijakan Privasi</a></p>
+    <!-- Simulasi QR -->
+    <div class="qr-section" id="paymentSection" style="display:none;">
+      <h3>Scan untuk Membayar</h3>
+      <img src="https://via.placeholder.com/200" alt="QR Code" />
+      <p>Gunakan aplikasi DANA untuk menyelesaikan pembayaran.</p>
+    </div>
   </div>
 
   <script>
-    // Menangani pengiriman formulir
     document.getElementById("topupForm").addEventListener("submit", function(event) {
       event.preventDefault();
-      
-      // Ambil data dari formulir
-      const game = document.getElementById("game").value;
-      const playerId = document.getElementById("playerId").value;
-      const amount = document.getElementById("amount").value;
-
-      // Validasi sederhana
-      if (!game || !playerId || !amount) {
-        alert("Harap isi semua kolom!");
-        return;
-      }
-
-      // Tampilkan instruksi pembayaran
-      alert(`DETAIL TOP-UP:\nGame: ${game}\nID Pemain: ${playerId}\nNominal: ${amount} Diamond/Credit\n\nLakukan transfer ke DANA berikut:\nNomor: 085697067873\nNama: Dragon MC Top Up\n\nSetelah transfer selesai, mohon konfirmasi ke Admin untuk memproses top-up.`);
+      const paymentSection = document.getElementById("paymentSection");
+      paymentSection.style.display = "block"; // Tampilkan QR Code pembayaran
     });
   </script>
 </body>
