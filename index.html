@@ -3,207 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dragon MC - Legendary Server</title>
+  <title>Top Up Game</title>
   <style>
+    /* Reset dan gaya utama */
     body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #1a1a1a;
-      color: white;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
     }
 
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
+      max-width: 800px;
+      margin: 20px auto;
       padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
       text-align: center;
+      color: #007BFF;
     }
 
-    header {
-      background-color: #333;
-      padding: 20px 0;
-      margin-bottom: 30px;
-    }
-
-    header h1 {
-      color: #FFD700;
-      font-size: 2.5em;
-      margin: 0;
-    }
-
-    header p {
-      color: #fff;
-      margin: 10px 0 0;
-      font-size: 1.2em;
-    }
-
-    nav {
-      margin-top: 15px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: white;
-      margin: 0 15px;
-      font-size: 1em;
+    label {
       font-weight: bold;
     }
 
-    nav a:hover {
-      color: #FFD700;
-    }
-
-    section {
-      margin: 30px 0;
-      padding: 20px;
-      background-color: #282828;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    section h2 {
-      margin-bottom: 15px;
-      color: #FFD700;
-    }
-
-    button, a button {
-      background-color: #FFD700;
-      color: black;
-      border: none;
-      padding: 10px 20px;
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
       border-radius: 5px;
-      cursor: pointer;
       font-size: 1em;
-      font-weight: bold;
-      margin: 10px 5px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
       transition: background-color 0.3s ease;
     }
 
-    button:hover, a button:hover {
-      background-color: #e5c100;
+    button:hover {
+      background-color: #0056b3;
     }
 
-    footer {
-      background-color: #333;
-      padding: 20px;
-      margin-top: 30px;
-      color: #ccc;
+    .footer {
+      text-align: center;
+      margin-top: 20px;
       font-size: 0.9em;
+      color: #666;
+    }
+
+    .footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <!-- Header -->
-    <header>
-      <h1>Dragon MC</h1>
-      <p>Server Minecraft Legendaris</p>
-      <nav>
-        <a href="#status">Status Server</a>
-        <a href="#leaderboard">Leaderboard</a>
-        <a href="#event">Event</a>
-        <a href="#shop">Shop</a>
-      </nav>
-    </header>
+    <h1>Top Up Game</h1>
+    <p style="text-align: center;">Dapatkan kredit game favorit Anda dengan mudah!</p>
 
-    <!-- Status Server -->
-    <section id="status">
-      <h2>Status Server</h2>
-      <div id="server-status">
-        <p>Loading status server...</p>
-      </div>
-    </section>
+    <!-- Form Top Up -->
+    <form id="topupForm">
+      <!-- Pilih Game -->
+      <label for="game">Pilih Game:</label>
+      <select id="game" name="game" required>
+        <option value="" disabled selected>Pilih game...</option>
+        <option value="Free Fire">Free Fire</option>
+        <option value="Mobile Legends">Mobile Legends</option>
+        <option value="PUBG Mobile">PUBG Mobile</option>
+        <option value="Genshin Impact">Genshin Impact</option>
+      </select>
 
-    <!-- Leaderboard -->
-    <section id="leaderboard">
-      <h2>Leaderboard</h2>
-      <div class="leaderboard-list">
-        <div class="player">#1 <strong>PlayerLegend</strong> - 1000 Kills</div>
-        <div class="player">#2 <strong>DragonSlayer</strong> - 900 Kills</div>
-        <div class="player">#3 <strong>Warrior21</strong> - 850 Kills</div>
-      </div>
-    </section>
+      <!-- Masukkan ID Pemain -->
+      <label for="playerId">Masukkan ID Pemain:</label>
+      <input type="text" id="playerId" name="playerId" placeholder="Contoh: 123456789" required>
 
-    <!-- Event Section -->
-    <section id="event">
-      <h2>Event</h2>
-      <p>Turnamen PvP dimulai dalam:</p>
-      <p id="countdown">Loading...</p>
-    </section>
+      <!-- Pilih Jumlah Top Up -->
+      <label for="amount">Pilih Nominal Top Up:</label>
+      <select id="amount" name="amount" required>
+        <option value="" disabled selected>Pilih nominal...</option>
+        <option value="10">10 Diamond/Credit</option>
+        <option value="50">50 Diamond/Credit</option>
+        <option value="100">100 Diamond/Credit</option>
+        <option value="500">500 Diamond/Credit</option>
+      </select>
 
-    <!-- Shop Section -->
-    <section id="shop">
-      <h2>Shop</h2>
-      <p>Dukung server kami dengan membeli paket VIP dan item eksklusif!</p>
-      <button>Buka Shop</button>
-    </section>
+      <!-- Tombol Bayar -->
+      <button type="submit">Bayar Sekarang</button>
+    </form>
+  </div>
 
-    <!-- Grup WhatsApp dan Vote -->
-    <section id="links">
-      <h2>Grup WhatsApp & Vote</h2>
-      <a href="https://s.id/wa-dragonmc"><button>Gabung Grup WhatsApp</button></a>
-      <a href="https://s.id/vote-dragonmc"><button>Vote Server</button></a>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <p>&copy; 2025 Dragon MC. Semua Hak Cipta Dilindungi.</p>
-    </footer>
+  <!-- Footer -->
+  <div class="footer">
+    <p>&copy; 2025 Top Up Game. Semua Hak Cipta Dilindungi. <a href="#">Kebijakan Privasi</a></p>
   </div>
 
   <script>
-    // Mengambil data status server
-    async function fetchServerStatus() {
-      try {
-        const response = await fetch('query.php'); // Pastikan file query.php sudah tersedia
-        const data = await response.json();
+    // Menangani pengiriman formulir
+    document.getElementById("topupForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      
+      // Ambil data dari formulir
+      const game = document.getElementById("game").value;
+      const playerId = document.getElementById("playerId").value;
+      const amount = document.getElementById("amount").value;
 
-        if (data.online) {
-          document.getElementById('server-status').innerHTML = `
-            <p><span class="status-online">Server Online</span></p>
-            <p>Pemain Online: <strong>${data.players}</strong> / ${data.max_players}</p>
-            <p>Versi: <strong>${data.version}</strong></p>
-          `;
-        } else {
-          document.getElementById('server-status').innerHTML = `
-            <p><span class="status-offline">Server Offline</span></p>
-          `;
-        }
-      } catch (error) {
-        document.getElementById('server-status').innerHTML = `
-          <p>Error: Tidak dapat memuat status server.</p>
-        `;
-      }
-    }
-
-    // Update status server setiap 5 detik
-    setInterval(fetchServerStatus, 5000);
-    fetchServerStatus();
-
-    // Countdown untuk event
-    const eventDate = new Date("2025-04-01T00:00:00").getTime();
-    const countdownElement = document.getElementById("countdown");
-
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = eventDate - now;
-
-      if (distance < 0) {
-        countdownElement.innerHTML = "Event Sedang Berlangsung!";
+      // Validasi sederhana
+      if (!game || !playerId || !amount) {
+        alert("Harap isi semua kolom!");
         return;
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      countdownElement.innerHTML = `${days} Hari ${hours} Jam ${minutes} Menit ${seconds} Detik`;
-    }
-
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+      // Simulasi pemrosesan pembayaran
+      alert(`Top Up berhasil!\nGame: ${game}\nID Pemain: ${playerId}\nNominal: ${amount}`);
+    });
   </script>
 </body>
 </html>
